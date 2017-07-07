@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'sme';
+  state = {
+    population: 1,
+    birthRate: 1
+  }
+  effects = [
+    {
+      title: 'birth',
+      change: 'population = population + birthRate'
+    }
+  ]
 }

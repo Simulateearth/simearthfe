@@ -1,11 +1,8 @@
 <h1>Simulate Earth</h1>
 
-<button>Play</button>
-<button>Stop</button>
+<div>
+  <a [routerLink]="'/about'" routerLinkActive="active">About</a>
+  <a [routerLink]="'/simulation'" routerLinkActive="active">Simulation</a>
+</div>
 
-<pre>
-  {{state | async | json}}
-</pre>
-
-<textarea></textarea>
-<button>save</button>
+<router-outlet></router-outlet>

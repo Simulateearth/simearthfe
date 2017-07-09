@@ -12,30 +12,50 @@ import { Subscription } from 'rxjs/Subscription';
 export class DashboardComponent implements OnInit {
   state: any;
   subscription: Subscription;
+  log: Array<string> = [];
 
   constructor(private simEngine: SimEngineService) { }
 
   ngOnInit() {
     this.simEngine.loadConfig(
       {
+        interval: 300,
         state: {
           currentStep: 0,
           population: 7500000000,
           dailyDeathRate: 0.999979787,
-          dailyBirthRate: 1.000048
+          dailyBirthRate: 1.000048,
+          metoriteProbability: 100 /* 1 of x days */,
+          metoriteDeathRate: 0.5
         },
         effects: [
           {
             title: 'death',
             change: 'population',
-            factorReference: 'dailyDeathRate'
+            factorReference: 'dailyDeathRate',
+            probability: 1
           },
           {
             title: 'birth',
             change: 'population',
-            factorReference: 'dailyBirthRate'
+            factorReference: 'dailyBirthRate',
+            probability: 1
+          },
+          {
+            title: 'metorite',
+            change: 'population',
+            factorReference: 'metoriteDeathRate',
+            probabilityReference: 'metoriteProbability'
           }
         ]
+      });
+
+    this.simEngine.getLog()
+      .subscribe((entry) => {
+        this.log.unshift(entry);
+        if (this.log.length > 100) {
+          this.log.splice(this.log.length - 10, 10);
+        }
       });
   }
 

@@ -5,17 +5,17 @@ import 'rxjs/add/observable/interval';
 @Injectable()
 export class StepMakerService {
   private currentStep = 0;
+  private startStep = 0;
 
   constructor() { }
 
-  start() {
-    return Observable.interval(500)
+  start(interval) {
+    return Observable.interval(interval)
       .map((step) => {
-        if (step < this.currentStep) {
-          this.currentStep = step + this.currentStep;
-        } else {
-          this.currentStep = step;
+        if (step === 0) {
+          this.startStep = this.currentStep;
         }
+        this.currentStep = step + this.startStep;
         return this.currentStep;
       });
   }

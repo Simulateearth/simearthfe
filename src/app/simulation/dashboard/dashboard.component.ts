@@ -16,7 +16,27 @@ export class DashboardComponent implements OnInit {
   constructor(private simEngine: SimEngineService) { }
 
   ngOnInit() {
-    this.simEngine.loadConfig({ state: { currentStep: 0 } });
+    this.simEngine.loadConfig(
+      {
+        state: {
+          currentStep: 0,
+          population: 7500000000,
+          dailyDeathRate: 0.999979787,
+          dailyBirthRate: 1.000048
+        },
+        effects: [
+          {
+            title: 'death',
+            change: 'population',
+            factorReference: 'dailyDeathRate'
+          },
+          {
+            title: 'birth',
+            change: 'population',
+            factorReference: 'dailyBirthRate'
+          }
+        ]
+      });
   }
 
   start() {

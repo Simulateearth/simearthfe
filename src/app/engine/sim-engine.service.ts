@@ -54,7 +54,7 @@ export class SimEngineService {
 
     const nextStateWithEffects = this.runEffects(nextState, this.config.effects);
 
-    this.nextState = nextState;
+    this.nextState = nextStateWithEffects;
     this.simulate.next(nextStateWithEffects);
 
     return this.simulate;
@@ -63,21 +63,9 @@ export class SimEngineService {
   runEffects(nextState, effects) {
     for (let effectKey = 0; effectKey < effects.length; effectKey++) {
       if (this.effectProbable(effects[effectKey], nextState)) {
-        nextState = this.runEffect(nextState, effects[effectKey]);
+        nextState = this.runEffect(effects[effectKey], nextState);
       }
     }
-    return nextState;
-  }
-
-  runEffect(nextState, effect) {
-    const origValue = parseFloat(nextState[effect.change]);
-    const factor = parseFloat(nextState[effect.factorReference]);
-    nextState[effect.change] = origValue * factor;
-
-    /* change to push due to performance - as ui is ready*/
-    this.log.next(
-      `Effect ${effect.title} changes: ${effect.change}: ${origValue} * ${factor} == ${nextState[effect.change]}`);
-
     return nextState;
   }
 
@@ -96,4 +84,17 @@ export class SimEngineService {
       return Math.floor((Math.random() * probability) + 1) === 1;
     }
   }
+
+  runEffect(effect, nextState) {
+    const origValue = parseFloat(nextState[effect.change]);
+    const factor = parseFloat(nextState[effect.factorReference]);
+    nextState[effect.change] = origValue * factor;
+
+    /* change to push due to performance - as ui is ready*/
+    this.log.next(
+      `Effect ${effect.title} changes: ${effect.change}: ${origValue} * ${factor} == ${nextState[effect.change]}`);
+
+    return nextState;
+  }
+
 }

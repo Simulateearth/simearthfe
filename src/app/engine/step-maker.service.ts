@@ -9,6 +9,11 @@ export class StepMakerService {
 
   constructor() { }
 
+  reset() {
+    this.currentStep = 0;
+    this.startStep = 0;
+  }
+
   start(interval) {
     return Observable.interval(interval)
       .map((step) => {

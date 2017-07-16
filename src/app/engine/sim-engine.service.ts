@@ -26,6 +26,8 @@ export class SimEngineService {
   loadConfig(config: any) {
     this.config = config;
 
+    this.stepMaker.reset();
+
     this.startState = config.state;
     this.startState.currentStep = 0;
 

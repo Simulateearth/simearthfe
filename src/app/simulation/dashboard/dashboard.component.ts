@@ -1,10 +1,9 @@
-import { SimEngineService } from '../../engine';
-
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { simpleEarthConfig } from '../../simpleEarthConfig';
+import { SimEngineService } from '../../engine';
+import { ConfigurationService } from '../../engine';
 
 @Component({
   selector: 'sme-dashboard',
@@ -15,9 +14,10 @@ export class DashboardComponent implements OnInit {
   state: any;
   subscription: Subscription;
   log: Array<string> = [];
-  configJson: string = JSON.stringify(simpleEarthConfig, null, 4);
 
-  constructor(private simEngine: SimEngineService) { }
+  constructor(
+    private simEngine: SimEngineService,
+    private configuration: ConfigurationService ) { }
 
   ngOnInit() {
     this.simEngine.getLog()
@@ -27,10 +27,18 @@ export class DashboardComponent implements OnInit {
           this.log.splice(this.log.length - 10, 10);
         }
       });
+
+    this.loadConfig();
   }
 
   loadConfig() {
-    this.simEngine.loadConfig(JSON.parse(this.configJson));
+    this.simEngine.loadConfig(this.configuration.get());
+  }
+
+  restart() {
+    this.state = null;
+    this.loadConfig();
+    this.start();
   }
 
   start() {

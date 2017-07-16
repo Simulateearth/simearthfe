@@ -1,6 +1,6 @@
 # Simearthfe
 
-## [Try out live version on github pages](https://simulateearth.github.io/simearthfe/index.html/)
+## [Try out live version on github pages](https://simulateearth.github.io/simearthfe/index.html)
 
 ---
 

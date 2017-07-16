@@ -1,5 +1,11 @@
 # Simearthfe
 
+## [Try out live version on github pages](https://simulateearth.github.io/simearthfe/index.html/)
+
+---
+
+# Angular-CLI default docs
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.0.
 
 ## Development server

@@ -11,4 +11,12 @@ export class ConfigurationService {
   get() {
     return JSON.parse(this.configJson);
   }
+
+  getJson(): string {
+    return this.configJson;
+  }
+
+  set(newConfig: string) {
+    this.configJson = newConfig;
+  }
 }

@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private simEngine: SimEngineService,
-    private configuration: ConfigurationService ) { }
+    private configuration: ConfigurationService) { }
 
   ngOnInit() {
     this.simEngine.getLog()
@@ -36,17 +36,21 @@ export class DashboardComponent implements OnInit {
   }
 
   restart() {
+    this.stop();
     this.state = null;
+    this.log = [];
     this.loadConfig();
     this.start();
   }
 
   start() {
-    this.subscription = this.simEngine.start().subscribe(
-      ((nextState) => {
-        this.state = nextState;
-      })
-    );
+    if (this.subscription === undefined || this.subscription.closed) {
+      this.subscription = this.simEngine.start().subscribe(
+        ((nextState) => {
+          this.state = nextState;
+        })
+      );
+    }
   }
 
   stop() {

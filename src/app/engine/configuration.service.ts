@@ -1,22 +1,24 @@
 import { Injectable } from '@angular/core';
 
+import * as yaml from 'js-yaml';
+
 import { simpleEarthConfig } from '../sample-data/simple-earth.config';
 
 @Injectable()
 export class ConfigurationService {
-  configJson: string = JSON.stringify(simpleEarthConfig, null, 4);
+  configYaml: string = yaml.safeDump(simpleEarthConfig);
 
   constructor() { }
 
   get() {
-    return JSON.parse(this.configJson);
+    return yaml.load(this.configYaml);
   }
 
-  getJson(): string {
-    return this.configJson;
+  getYaml(): string {
+    return this.configYaml;
   }
 
-  set(newConfig: string) {
-    this.configJson = newConfig;
+  set(newConfigYaml: string) {
+    this.configYaml = newConfigYaml;
   }
 }

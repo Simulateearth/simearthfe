@@ -8,18 +8,18 @@ import { ConfigurationService } from '../../engine';
   styleUrls: ['./editor.component.css']
 })
 export class EditorComponent implements OnInit {
-  configString = null;
+  configYaml = null;
 
   constructor(
     private configuration: ConfigurationService
   ) { }
 
   ngOnInit() {
-    this.configString = this.configuration.getJson();
+    this.configYaml = this.configuration.getYaml();
   }
 
   save(newConfig) {
-    this.configString = newConfig;
-    this.configuration.set(this.configString);
+    this.configYaml = newConfig;
+    this.configuration.set(this.configYaml);
   }
 }

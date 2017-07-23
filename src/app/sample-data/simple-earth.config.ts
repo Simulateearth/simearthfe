@@ -2,6 +2,7 @@ export const simpleEarthConfig = {
   interval: 300,
   state: {
     currentStep: 0,
+    date: new Date(),
     population: 7500000000,
     dailyDeathRate: 0.999979787,
     dailyBirthRate: 1.000048,
@@ -9,20 +10,24 @@ export const simpleEarthConfig = {
     meteoriteDeathRate: 0.5,
     meteoriteRisingProbabilityRate: 0.99,
     forestSurface: 39991000,
-    deforestationRate: 0.999997649
+    deforestationRate: 0.999997649,
+    dailyTotalBirths: 0
   },
   effects: [
+    {
+      title: 'daily total Births',
+      change: 'dailyTotalBirths',
+      expression: 'population * (1 - dailyBirthRate) * -1'
+    },
     {
       title: 'death',
       change: 'population',
       factorReference: 'dailyDeathRate',
-      probability: 1
     },
     {
       title: 'birth',
       change: 'population',
       factorReference: 'dailyBirthRate',
-      probability: 1
     },
     {
       title: 'meteorite',
@@ -34,13 +39,11 @@ export const simpleEarthConfig = {
       title: 'more meteorites',
       change: 'meteoriteProbability',
       factorReference: 'meteoriteRisingProbabilityRate',
-      probability: 1
     },
     {
       title: 'deforestation',
       change: 'forestSurface',
       factorReference: 'deforestationRate',
-      probability: 1
     }
   ]
 };

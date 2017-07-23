@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 import { Observable, Subscription, BehaviorSubject } from 'rxjs/Rx';
 import 'rxjs/add/operator/switchMap';
 
+import * as mathjs from 'mathjs';
+
 @Injectable()
 export class SimEngineService {
   private config: any = {};
@@ -109,12 +111,35 @@ export class SimEngineService {
 
   runEffect(effect, nextState) {
     const origValue = parseFloat(nextState[effect.change]);
+
+    if (effect.factorReference !== undefined) {
+      nextState = this.effectByFactor(origValue, effect, nextState);
+    }
+
+    if (effect.expression !== undefined) {
+      nextState = this.effectByExpression(origValue, effect, nextState);
+    }
+
+
+    return nextState;
+  }
+
+  effectByFactor(origValue, effect, nextState) {
     const factor = parseFloat(nextState[effect.factorReference]);
     nextState[effect.change] = origValue * factor;
 
-    /* change to push due to performance - as ui is ready*/
     this.log.next(
       `Effect ${effect.title} changes: ${effect.change}: ${origValue} * ${factor} == ${nextState[effect.change]}`);
+
+    return nextState;
+  }
+
+  effectByExpression(origValue, effect, nextState) {
+    nextState[effect.change] = mathjs.eval(effect.expression, nextState)
+
+    this.log.next(
+      `Effect ${effect.title} changes: ${effect.change} unsing expression:`
+      + ` ${effect.expression} == ${nextState[effect.change]}`);
 
     return nextState;
   }

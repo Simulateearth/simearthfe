@@ -12,12 +12,11 @@ import { SimConfService } from '../../engine';
 })
 export class DashboardComponent implements OnInit {
   state: any;
-  subscription: Subscription;
   log: Array<string> = [];
 
   constructor(
     private simEngine: SimEngineService,
-    private configuration: SimConfService) { }
+    private simConf: SimConfService) { }
 
   ngOnInit() {
     this.simEngine.getLog()
@@ -32,28 +31,28 @@ export class DashboardComponent implements OnInit {
   }
 
   loadConfig() {
-    this.simEngine.loadConfig(this.configuration.get());
+    this.simEngine.loadConfig(this.simConf.get());
   }
 
   restart() {
-    this.stop();
-    this.state = null;
+    this.state = {};
     this.log = [];
-    this.loadConfig();
-    this.start();
+    this.simEngine.restart()
+      .subscribe(
+        (nextState) => {
+          this.state = nextState;
+        });
   }
 
   start() {
-    if (this.subscription === undefined || this.subscription.closed) {
-      this.subscription = this.simEngine.start().subscribe(
-        ((nextState) => {
+    this.simEngine.start()
+      .subscribe(
+        (nextState) => {
           this.state = nextState;
-        })
-      );
-    }
+        });
   }
 
   stop() {
-    this.subscription.unsubscribe();
+    this.simEngine.stop();
   }
 }

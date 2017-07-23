@@ -18,7 +18,7 @@ export class StepMakerService {
     return Observable.interval(interval)
       .map((step) => {
         if (step === 0) {
-          this.startStep = this.currentStep;
+          this.startStep = this.currentStep + 1;
         }
         this.currentStep = step + this.startStep;
         return this.currentStep;

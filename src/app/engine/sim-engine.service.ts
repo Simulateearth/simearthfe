@@ -2,8 +2,7 @@ import { StepMakerService } from './step-maker.service';
 
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Rx';
-import { BehaviorSubject } from 'rxjs/Rx';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs/Rx';
 import 'rxjs/add/operator/switchMap';
 
 @Injectable()
@@ -12,11 +11,14 @@ export class SimEngineService {
   private startState: any = {};
   private nextState: any = {};
   private history: Array<any> = [];
-  private simulate: BehaviorSubject<any>;
+  private stateObservable: BehaviorSubject<any>;
+  private observeState: Observable<any>;
+  private stepMakerSubscription: Subscription;
   private log: BehaviorSubject<any>;
 
   constructor(private stepMaker: StepMakerService) {
     this.log = new BehaviorSubject('empty log');
+    this.stateObservable = new BehaviorSubject({});
   }
 
   getConfig() {
@@ -32,19 +34,37 @@ export class SimEngineService {
     this.startState.currentStep = 0;
 
     this.nextState = Object.assign({}, this.startState);
-    this.simulate = new BehaviorSubject(this.startState);
+    this.stateObservable.next(this.startState);
   }
 
   start() {
-    return this.stepMaker
-      .start(this.config.interval)
-      .switchMap((step) => {
-        return this.nextStep(step);
-      })
+    if (this.stepMakerSubscription === undefined || this.stepMakerSubscription.closed) {
+      this.stepMakerSubscription = this.stepMaker
+        .start(this.config.interval)
+        .subscribe((step) => {
+          this.nextStep(step);
+        });
+    }
+    return this.stateObservable;
+  }
+
+  stop() {
+    if (this.stepMakerSubscription !== undefined) {
+      this.stepMakerSubscription.unsubscribe();
+    }
+  }
+
+  restart() {
+    this.loadConfig(this.config);
+    return this.start();
   }
 
   getLog() {
     return this.log;
+  }
+
+  getState() {
+    return this.stateObservable;
   }
 
   nextStep(step: number): BehaviorSubject<any> {
@@ -57,9 +77,9 @@ export class SimEngineService {
     const nextStateWithEffects = this.runEffects(nextState, this.config.effects);
 
     this.nextState = nextStateWithEffects;
-    this.simulate.next(nextStateWithEffects);
+    this.stateObservable.next(nextStateWithEffects);
 
-    return this.simulate;
+    return this.stateObservable;
   }
 
   runEffects(nextState, effects) {

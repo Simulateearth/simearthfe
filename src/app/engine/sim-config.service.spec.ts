@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { ConfigurationService } from './configuration.service';
+import { SimConfService } from './sim-config.service';
 
 describe('ConfigurationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ConfigurationService]
+      providers: [SimConfService]
     });
   });
 
-  it('should be created', inject([ConfigurationService], (service: ConfigurationService) => {
+  it('should be created', inject([SimConfService], (service: SimConfService) => {
     expect(service).toBeTruthy();
   }));
 });

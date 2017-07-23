@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { SimEngineService } from '../../engine';
-import { ConfigurationService } from '../../engine';
+import { SimConfService } from '../../engine';
 
 @Component({
   selector: 'sme-dashboard',
@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private simEngine: SimEngineService,
-    private configuration: ConfigurationService) { }
+    private configuration: SimConfService) { }
 
   ngOnInit() {
     this.simEngine.getLog()

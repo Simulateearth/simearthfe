@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StepMakerService } from './step-maker.service';
 import { SimEngineService } from './sim-engine.service';
-import { ConfigurationService } from './configuration.service';
+import { SimConfService } from './sim-config.service';
 
 @NgModule({
   imports: [
@@ -11,7 +11,7 @@ import { ConfigurationService } from './configuration.service';
   providers: [
     StepMakerService,
     SimEngineService,
-    ConfigurationService
+    SimConfService
   ],
   declarations: []
 })

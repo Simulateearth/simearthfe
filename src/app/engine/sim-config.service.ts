@@ -5,7 +5,7 @@ import * as yaml from 'js-yaml';
 import { simpleEarthConfig } from '../sample-data/simple-earth.config';
 
 @Injectable()
-export class ConfigurationService {
+export class SimConfService {
   configYaml: string = yaml.safeDump(simpleEarthConfig);
 
   constructor() { }

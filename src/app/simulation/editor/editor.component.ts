@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ConfigurationService } from '../../engine';
+import { SimConfService } from '../../engine';
 
 @Component({
   selector: 'sme-editor',
@@ -11,7 +11,7 @@ export class EditorComponent implements OnInit {
   configYaml = null;
 
   constructor(
-    private configuration: ConfigurationService
+    private configuration: SimConfService
   ) { }
 
   ngOnInit() {

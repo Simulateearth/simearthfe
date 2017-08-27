@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EditorComponent } from './editor/editor.component';
+import { ControlsComponent } from './controls/controls.component';
 
 @NgModule({
   imports: [
@@ -9,8 +10,9 @@ import { EditorComponent } from './editor/editor.component';
   ],
   exports: [
     DashboardComponent,
-    EditorComponent
+    EditorComponent,
+    ControlsComponent
   ],
-  declarations: [DashboardComponent, EditorComponent]
+  declarations: [DashboardComponent, EditorComponent, ControlsComponent]
 })
 export class SimulationModule { }

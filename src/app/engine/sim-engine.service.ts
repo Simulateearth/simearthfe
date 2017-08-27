@@ -19,7 +19,7 @@ export class SimEngineService {
   private log: BehaviorSubject<any>;
 
   constructor(private stepMaker: StepMakerService) {
-    this.log = new BehaviorSubject('empty log');
+    this.getLog();
     this.stateObservable = new BehaviorSubject({});
   }
 
@@ -58,11 +58,23 @@ export class SimEngineService {
 
   restart() {
     this.loadConfig(this.config);
+    this.stopLog();
     return this.start();
   }
 
+  stopLog() {
+    this.log.complete();
+  }
+
   getLog() {
-    return this.log;
+    if (!this.log || this.log.isStopped) {
+      this.log = new BehaviorSubject('empty log');
+    }
+    return this.log.share();
+  }
+
+  logMsg(message: string) {
+    this.log.next(message);
   }
 
   getState() {
@@ -70,7 +82,7 @@ export class SimEngineService {
   }
 
   nextStep(step: number): BehaviorSubject<any> {
-    this.log.next('Taking next Step: ' + step);
+    this.logMsg('Taking next Step: ' + step);
 
     const nextState = Object.assign({}, this.nextState);
     this.history.push(nextState);
@@ -128,7 +140,7 @@ export class SimEngineService {
     const factor = parseFloat(nextState[effect.factorReference]);
     nextState[effect.change] = origValue * factor;
 
-    this.log.next(
+    this.logMsg(
       `Effect ${effect.title} changes: ${effect.change}: ${origValue} * ${factor} == ${nextState[effect.change]}`);
 
     return nextState;
@@ -137,7 +149,7 @@ export class SimEngineService {
   effectByExpression(origValue, effect, nextState) {
     nextState[effect.change] = mathjs.eval(effect.expression, nextState)
 
-    this.log.next(
+    this.logMsg(
       `Effect ${effect.title} changes: ${effect.change} unsing expression:`
       + ` ${effect.expression} == ${nextState[effect.change]}`);
 

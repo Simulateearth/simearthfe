@@ -13,46 +13,43 @@ import { SimConfService } from '../../engine';
 export class DashboardComponent implements OnInit {
   state: any;
   log: Array<string> = [];
+  error: string;
 
   constructor(
     private simEngine: SimEngineService,
     private simConf: SimConfService) { }
 
   ngOnInit() {
+    this.getLog();
+    this.getState();
+  }
+
+  getLog() {
     this.simEngine.getLog()
-      .subscribe((entry) => {
-        this.log.unshift(entry);
-        if (this.log.length > 100) {
-          this.log.splice(this.log.length - 10, 10);
+      .subscribe(
+        (entry) => {
+          this.log.unshift(entry);
+          if (this.log.length > 100) {
+            this.log.splice(this.log.length - 10, 10);
+          }
+        },
+        error => this.error = error,
+        () => {
+          this.log = [];
+          this.getLog()
         }
+      );
+  }
+
+  getState() {
+    this.simEngine
+      .getState()
+      .subscribe(
+      (nextState) => {
+        this.state = nextState;
+      },
+      (error) => {
+        this.error = error;
       });
-
-    this.loadConfig();
-  }
-
-  loadConfig() {
-    this.simEngine.loadConfig(this.simConf.get());
-  }
-
-  restart() {
-    this.state = {};
-    this.log = [];
-    this.simEngine.restart()
-      .subscribe(
-        (nextState) => {
-          this.state = nextState;
-        });
-  }
-
-  start() {
-    this.simEngine.start()
-      .subscribe(
-        (nextState) => {
-          this.state = nextState;
-        });
-  }
-
-  stop() {
-    this.simEngine.stop();
   }
 }

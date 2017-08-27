@@ -51,7 +51,8 @@ export const simpleEarthConfig: SimConfig = {
   controls: [
     {
       type: 'justshow',
-      valueToTrack: 'population'
+      valueToTrack: 'population',
+      label: 'Global Population'
     }
   ]
 };

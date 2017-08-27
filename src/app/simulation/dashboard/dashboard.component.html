@@ -2,6 +2,7 @@
 
 <div *ngFor="let control of config.controls">
   <div *ngIf="control.type == 'justshow'">
+    {{control.label}}: 
     {{observing[control.valueToTrack] | async}}
   </div>
 </div>

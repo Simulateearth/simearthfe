@@ -5,10 +5,11 @@ import { Error404Component } from './error404/error404.component';
 import { AboutComponent } from './about/about.component';
 import { DashboardComponent } from './simulation/';
 import { EditorComponent } from './simulation';
+import { MonitorComponent } from './simulation';
 
 const routes: Routes = [
   {
-    path: 'simulation',
+    path: 'dashboard',
     component: DashboardComponent
   },
   {
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'about',
     component: AboutComponent
+  },
+  {
+    path: 'monitor',
+    component: MonitorComponent
   },
   {
     path: '',

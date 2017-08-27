@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build --aot --prod --base-href \"https://simulateearth.github.io/simearthfe/index.html\"; ngh"
+    "deploy": "ng build --aot --prod --base-href \"http://app.simulateearth.com/\"; ngh"
   },
   "private": true,
   "dependencies": {

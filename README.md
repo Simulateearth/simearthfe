@@ -1,6 +1,24 @@
 # Simearthfe
 
-## [Try out live version on github pages](https://simulateearth.github.io/simearthfe/index.html)
+## [Public version](http://app.simulateearth.com/)
+
+## Usage
+
+1. git clone git@github.com:Simulateearth/simearthfe.git
+2. cd simearthfe
+3. npm install
+4. ng serve -o (browser opens on localhost)
+
+## Known problems
+
+If you had a version with @angular/cli 1.2 you may have to remove and reinstall all node packages:
+
+```
+cd simearthfe
+git pull
+rm -rf node_modules package-lock.json
+npm install
+```
 
 ---
 

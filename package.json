@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "ng build --aot --prod --base-href \"http://app.simulateearth.com/\"; ngh"
+    "deploy": "ng build --aot --prod --base-href \"http://app.simulateearth.com/\"; echo \"app.simulateearth.com\" > dist/CNAME; ngh"
   },
   "private": true,
   "dependencies": {

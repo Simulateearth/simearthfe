@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EditorComponent } from './editor/editor.component';
 import { ControlsComponent } from './controls/controls.component';
+import { MonitorComponent } from './monitor/monitor.component';
 
 @NgModule({
   imports: [
@@ -11,8 +12,9 @@ import { ControlsComponent } from './controls/controls.component';
   exports: [
     DashboardComponent,
     EditorComponent,
-    ControlsComponent
+    ControlsComponent,
+    MonitorComponent
   ],
-  declarations: [DashboardComponent, EditorComponent, ControlsComponent]
+  declarations: [DashboardComponent, EditorComponent, ControlsComponent, MonitorComponent]
 })
 export class SimulationModule { }

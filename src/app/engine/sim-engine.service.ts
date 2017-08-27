@@ -1,4 +1,5 @@
 import { StepMakerService } from './step-maker.service';
+import { SimConfig } from './sim-config';
 
 import { Injectable } from '@angular/core';
 
@@ -17,13 +18,14 @@ export class SimEngineService {
   private observeState: Observable<any>;
   private stepMakerSubscription: Subscription;
   private log: BehaviorSubject<any>;
+  private observing: any = {};
 
   constructor(private stepMaker: StepMakerService) {
     this.getLog();
     this.stateObservable = new BehaviorSubject({});
   }
 
-  getConfig() {
+  getConfig(): SimConfig {
     return this.config;
   }
 
@@ -81,6 +83,19 @@ export class SimEngineService {
     return this.stateObservable;
   }
 
+  observeValue(valueToTrack) {
+    if (!this.observing.hasOwnProperty(valueToTrack)) {
+      this.observing[valueToTrack] = new BehaviorSubject(0);
+      return this.observing[valueToTrack];
+    }
+  }
+
+  observeValuesNext(nextState) {
+    for (const valueToTrack of Object.keys(this.observing)) {
+      this.observing[valueToTrack].next(nextState[valueToTrack]);
+    }
+  }
+
   nextStep(step: number): BehaviorSubject<any> {
     this.logMsg('Taking next Step: ' + step);
 
@@ -92,6 +107,8 @@ export class SimEngineService {
 
     this.nextState = nextStateWithEffects;
     this.stateObservable.next(nextStateWithEffects);
+
+    this.observeValuesNext(this.nextState);
 
     return this.stateObservable;
   }

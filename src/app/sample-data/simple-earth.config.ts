@@ -1,4 +1,6 @@
-export const simpleEarthConfig = {
+import { SimConfig } from '../engine';
+
+export const simpleEarthConfig: SimConfig = {
   interval: 300,
   state: {
     currentStep: 0,
@@ -44,6 +46,12 @@ export const simpleEarthConfig = {
       title: 'deforestation',
       change: 'forestSurface',
       factorReference: 'deforestationRate',
+    }
+  ],
+  controls: [
+    {
+      type: 'justshow',
+      valueToTrack: 'population'
     }
   ]
 };

@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { SimEngineService } from '../../engine';
-import { SimConfService } from '../../engine';
+import {
+  SimEngineService,
+  SimConfService,
+  SimConfig
+} from '../../engine';
 
 @Component({
   selector: 'sme-dashboard',
@@ -12,33 +15,23 @@ import { SimConfService } from '../../engine';
 })
 export class DashboardComponent implements OnInit {
   state: any;
-  log: Array<string> = [];
   error: string;
+  config: SimConfig;
+  observing: any = {};
 
   constructor(
-    private simEngine: SimEngineService,
-    private simConf: SimConfService) { }
+    private simEngine: SimEngineService) { }
 
   ngOnInit() {
-    this.getLog();
     this.getState();
+    this.config = this.simEngine.getConfig();
+    this.observeControls();
   }
 
-  getLog() {
-    this.simEngine.getLog()
-      .subscribe(
-        (entry) => {
-          this.log.unshift(entry);
-          if (this.log.length > 100) {
-            this.log.splice(this.log.length - 10, 10);
-          }
-        },
-        error => this.error = error,
-        () => {
-          this.log = [];
-          this.getLog()
-        }
-      );
+  observeControls() {
+    this.config.controls.forEach(control => {
+      this.observing[control.valueToTrack] = this.simEngine.observeValue(control.valueToTrack);
+    });
   }
 
   getState() {
